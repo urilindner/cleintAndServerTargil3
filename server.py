@@ -1,30 +1,53 @@
 import socket
-
-mysock = socket.socket()
-
-try:
-    mysock.connect(("127.0.0.1", 1450))
-except Exception as e:
-    mysock.close()
-    exit(f"server is down try again later {str(e)}")
-
+import random
+import time
+server_sock = socket.socket()
+server_sock.bind(("0.0.0.0" , 1450))
+server_sock.listen(3)
 
 while True:
-    msg = input("enter message to send or exit to finish: ")
-    if len(msg) == 4:
+    #server wait for clients
+
+    client_sock,addr = server_sock.accept()
+    print(f"{addr[0]} - connected")
+
+    while True:
+        #handle one client
 
         try:
-            mysock.send(msg.encode())
-            data_length = mysock.recv(2).decode()
-            data = mysock.recv(int(data_length)).decode()
-            print(f"server send - {data}")
-            if msg.lower() == "exit":
-                break
+            data = client_sock.recv(4).decode()
+
         except Exception as e:
-            print(f"error in receiving or sending data {str(e)}")
+            print(f"error in recv/send {str[e]}")
+            client_sock.close()
             break
-    else:
-        print("the length of the message is wrong, pls try another message")
 
+        if data == "":
+            break
+        print(f"getting data - {data}")
+        if data.lower() == "name":
+            sendDeta = "UriLindner"
 
-mysock.close()
+        elif data.lower() == "rand":
+            sendDeta = random.randint(1, 11)
+
+        elif data.lower() == "time":
+            sendDeta = time.ctime()
+
+        elif data.lower() == "exit":
+            print(f"{addr[0]} - disconnected")
+            sendDeta = "goodbye"
+            lengthDeta = str(len(str(sendDeta))).zfill(2)
+            client_sock.send(lengthDeta.encode())
+            client_sock.send(sendDeta.encode())
+            client_sock.close()
+            break
+
+        else:
+            print(f"{addr[0]} - kick out")
+            client_sock.close()
+            break
+
+        lengthDeta = str(len(str(sendDeta))).zfill(2)
+        client_sock.send(lengthDeta.encode())
+        client_sock.send(str(sendDeta).encode())
