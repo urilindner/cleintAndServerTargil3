@@ -36,11 +36,6 @@ while True:
 
         elif data.lower() == "exit":
             print(f"{addr[0]} - disconnected")
-            sendDeta = "goodbye"
-            lengthDeta = str(len(str(sendDeta))).zfill(2)
-            client_sock.send(lengthDeta.encode())
-            client_sock.send(sendDeta.encode())
-            client_sock.close()
             break
 
         else:
