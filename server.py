@@ -45,4 +45,4 @@ while True:
 
         lengthDeta = str(len(str(sendDeta))).zfill(2)
         client_sock.send(lengthDeta.encode())
-        client_sock.send(str(sendDeta).encode())
+        client_sock.send(str(sendDeta).encode()) #

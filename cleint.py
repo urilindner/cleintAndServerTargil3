@@ -34,4 +34,4 @@ while True:
     else:
         print("the length of the message is wrong, pls try another message")
 
-mysock.close()
+mysock.close() #
