@@ -44,4 +44,4 @@ while True:
     else:
         print("the message is wrong, pls try another message")
 
-mysock.close() #
+mysock.close() 
